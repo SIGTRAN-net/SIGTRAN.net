@@ -1,0 +1,30 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup Label="Project Settings">
+		<TargetFramework>net7.0</TargetFramework>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<Nullable>enable</Nullable>
+		<GenerateDocumentationFile>True</GenerateDocumentationFile>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<Folder Include="Protocols\Sctp\" />
+	</ItemGroup>
+
+	<ItemGroup Label="Package References">
+		<PackageReference Include="System.Memory" Version="4.5.5" />
+	</ItemGroup>
+
+	<ItemGroup Label="Exception Messages">
+		<EmbeddedResource Update="**\ExceptionMessages.resx">
+			<Generator>ResXFileCodeGenerator</Generator>
+			<LastGenOutput>ExceptionMessages.Designer.cs</LastGenOutput>
+		</EmbeddedResource>
+		<Compile Update="**\ExceptionMessages.Designer.cs">
+			<DesignTime>True</DesignTime>
+			<AutoGen>True</AutoGen>
+			<DependentUpon>ExceptionMessages.resx</DependentUpon>
+		</Compile>
+	</ItemGroup>
+
+</Project>
