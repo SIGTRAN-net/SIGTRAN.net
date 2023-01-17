@@ -66,28 +66,23 @@ internal readonly partial struct IPv4OptionSecurity : IBinarySerializable<IPv4Op
     public ReadOnlyMemory<byte> ToReadOnlyMemory()
     {
         var result = new Memory<byte>(new byte[LengthFixed]);
-        result.Span[0] = (byte)this.optionType;
-        result.Span[1] = LengthFixed;
-        BinaryPrimitives.WriteUInt16BigEndian(result.Span[2..], (ushort)this.securityLevel);
-        BinaryPrimitives.WriteUInt16BigEndian(result.Span[4..], this.compartments);
-        BinaryPrimitives.WriteUInt16BigEndian(result.Span[6..], this.handlingRestrictions);
-
-        var tcc = new Span<byte>(new byte[sizeof(uint)]);
-        BinaryPrimitives.WriteUInt32BigEndian(tcc, this.transmissionControlCode << 8);
-        result.Span[8] = tcc[0];
-        result.Span[9] = tcc[1];
-        result.Span[10] = tcc[2];
-
+        this.Write(result.Span);
         return result;
     }
 
     /// <inheritdoc />
-    public void Write(BinaryWriter writer) => writer.Write(this.ToReadOnlyMemory().Span);
+    public void Write(Span<byte> span)
+    {
+        span[0] = (byte)this.optionType;
+        span[1] = LengthFixed;
+        BinaryPrimitives.WriteUInt16BigEndian(span[2..], (ushort)this.securityLevel);
+        BinaryPrimitives.WriteUInt16BigEndian(span[4..], this.compartments);
+        BinaryPrimitives.WriteUInt16BigEndian(span[6..], this.handlingRestrictions);
 
-    /// <inheritdoc />
-    public void Write(Stream stream) => stream.Write(this.ToReadOnlyMemory().Span);
-
-    /// <inheritdoc />
-    public ValueTask WriteAsync(Stream stream, CancellationToken cancellationToken = default) =>
-        stream.WriteAsync(this.ToReadOnlyMemory(), cancellationToken);
+        var tcc = new Span<byte>(new byte[sizeof(uint)]);
+        BinaryPrimitives.WriteUInt32BigEndian(tcc, this.transmissionControlCode << 8);
+        span[8] = tcc[0];
+        span[9] = tcc[1];
+        span[10] = tcc[2];
+    }
 }

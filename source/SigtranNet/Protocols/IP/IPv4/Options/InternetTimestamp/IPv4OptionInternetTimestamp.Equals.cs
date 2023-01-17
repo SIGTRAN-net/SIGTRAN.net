@@ -23,12 +23,7 @@ internal readonly partial struct IPv4OptionInternetTimestamp
         var timestampsSpanThis = this.timestamps.Span;
         var timestampsSpanOther = other.timestamps.Span;
         if (timestampsSpanThis.Length != timestampsSpanOther.Length) return false;
-        for (var i = 0; i < timestampsSpanThis.Length; i++)
-        {
-            equal &= timestampsSpanThis[i].Equals(timestampsSpanOther[i]);
-        }
-
-        return equal;
+        return timestampsSpanThis.SequenceEqual(timestampsSpanOther);
     }
 
     /// <inheritdoc />

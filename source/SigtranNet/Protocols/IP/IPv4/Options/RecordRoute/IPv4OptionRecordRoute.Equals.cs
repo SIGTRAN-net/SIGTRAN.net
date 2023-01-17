@@ -41,14 +41,17 @@ internal readonly partial struct IPv4OptionRecordRoute
     /// <inheritdoc />
     public override int GetHashCode()
     {
-        var hashCode = HashCode.Combine(this.optionType, this.length, this.pointer);
+        var hashCode = new HashCode();
+        hashCode.Add(this.optionType);
+        hashCode.Add(this.length);
+        hashCode.Add(this.pointer);
 
         var routeSpan = this.route.Span;
         for (var i = 0; i < routeSpan.Length; i++)
         {
-            hashCode = HashCode.Combine(hashCode, routeSpan[i]);
+            hashCode.Add(routeSpan[i]);
         }
 
-        return hashCode;
+        return hashCode.ToHashCode();
     }
 }

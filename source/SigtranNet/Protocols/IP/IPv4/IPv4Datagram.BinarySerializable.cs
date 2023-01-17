@@ -49,20 +49,22 @@ internal readonly partial struct IPv4Datagram : IBinarySerializable<IPv4Datagram
     /// <inheritdoc />
     public ReadOnlyMemory<byte> ToReadOnlyMemory()
     {
-        var headerMemory = this.header.ToReadOnlyMemory();
-        var result = new Memory<byte>(new byte[headerMemory.Length + this.payload.Length]);
-        headerMemory.CopyTo(result);
-        this.payload.CopyTo(result[headerMemory.Length..]);
-        return result;
+        var memory = new Memory<byte>(new byte[this.header.totalLength]);
+        this.Write(memory.Span);
+        return memory;
     }
 
     /// <inheritdoc />
-    public void Write(BinaryWriter writer) => writer.Write(this.ToReadOnlyMemory().Span);
+    public void Write(Span<byte> span)
+    {
+        this.header.Write(span);
+        this.payload.Span.CopyTo(span[this.header.internetHeaderLength..this.header.totalLength]);
+    }
 
     /// <inheritdoc />
-    public void Write(Stream stream) => stream.Write(this.ToReadOnlyMemory().Span);
-
-    /// <inheritdoc />
-    public ValueTask WriteAsync(Stream stream, CancellationToken cancellationToken = default) =>
-        stream.WriteAsync(this.ToReadOnlyMemory(), cancellationToken);
+    public async Task WriteAsync(Memory<byte> memory, CancellationToken cancellationToken = default)
+    {
+        await ((IBinarySerializable)this.header).WriteAsync(memory, cancellationToken);
+        this.payload.CopyTo(memory[this.header.internetHeaderLength..this.header.totalLength]);
+    }
 }

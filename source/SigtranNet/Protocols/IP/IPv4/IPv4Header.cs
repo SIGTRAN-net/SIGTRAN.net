@@ -65,7 +65,7 @@ internal readonly partial struct IPv4Header
     ///     <code>
     ///         Total Length is the length of the datagram, measured in octets,
     ///         including internet header and data.This field allows the length of
-    ///         a datagram to be up to 65,535 octets.Such long datagrams are
+    ///         a datagram to be up to 65,535 octets. Such long datagrams are
     ///         impractical for most hosts and networks.All hosts must be prepared
     ///         to accept datagrams of up to 576 octets (whether they arrive whole
     ///         or in fragments).  It is recommended that hosts only send datagrams

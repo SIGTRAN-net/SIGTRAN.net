@@ -24,21 +24,12 @@ internal readonly partial struct IPv4Header
             && this.sourceAddress.Equals(other.sourceAddress)
             && this.destinationAddress.Equals(other.destinationAddress);
 
-        if (!equal)
-            return equal;
+        if (!equal) return equal;
 
         var optionsSpanThis = this.options.Span;
         var optionsSpanOther = other.options.Span;
-        if (optionsSpanThis.Length != optionsSpanOther.Length)
-            return false;
-
-        for (var i = 0; i < optionsSpanThis.Length; i++)
-        {
-            if (!optionsSpanThis[i].Equals(optionsSpanOther[i]))
-                return false;
-        }
-
-        return true;
+        if (optionsSpanThis.Length != optionsSpanOther.Length) return false;
+        return optionsSpanThis.SequenceEqual(optionsSpanOther);
     }
 
     /// <inheritdoc />
@@ -53,29 +44,25 @@ internal readonly partial struct IPv4Header
     /// <inheritdoc />
     public override int GetHashCode()
     {
-        var hashCode =
-            HashCode.Combine(
-                this.internetHeaderLength,
-                this.typeOfService,
-                this.totalLength,
-                this.identification,
-                this.flags,
-                this.fragmentOffset,
-                this.timeToLive,
-                this.protocol);
-        hashCode =
-            HashCode.Combine(
-                hashCode,
-                this.headerChecksum,
-                this.sourceAddress,
-                this.destinationAddress);
+        var hashCode = new HashCode();
+        hashCode.Add(this.internetHeaderLength);
+        hashCode.Add(this.typeOfService);
+        hashCode.Add(this.totalLength);
+        hashCode.Add(this.identification);
+        hashCode.Add(this.flags);
+        hashCode.Add(this.fragmentOffset);
+        hashCode.Add(this.timeToLive);
+        hashCode.Add(this.protocol);
+        hashCode.Add(this.headerChecksum);
+        hashCode.Add(this.sourceAddress);
+        hashCode.Add(this.destinationAddress);
 
         var optionsSpan = this.options.Span;
         for (var i = 0; i < optionsSpan.Length; i++)
         {
-            hashCode = HashCode.Combine(hashCode, optionsSpan[i]);
+            hashCode.Add(optionsSpan[i]);
         }
 
-        return hashCode;
+        return hashCode.ToHashCode();
     }
 }

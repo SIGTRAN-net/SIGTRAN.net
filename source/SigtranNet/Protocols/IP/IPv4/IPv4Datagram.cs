@@ -83,7 +83,7 @@ internal readonly partial struct IPv4Datagram
         var sourceAddressBytes = sourceAddress.MapToIPv4().GetAddressBytes().AsSpan();
         var destinationAddressBytes = destinationAddress.MapToIPv4().GetAddressBytes().AsSpan();
         ushort headerChecksum =
-            OnesComplementChecksum16Bit.Calculate(
+            OnesComplementChecksum16Bit.Generate(
                 new ReadOnlyMemory<ushort>(new ushort[]
                 {
                     GetUInt16(internetHeaderLength, typeOfService),

@@ -19,22 +19,43 @@ public interface IBinarySerializable
     /// <summary>
     /// Writes the data to the stream of <paramref name="writer" />.
     /// </summary>
-    /// <param name="writer">The binary writer.</param>
-    void Write(BinaryWriter writer);
+    /// <param name="writer">The binary writer that will write the data.</param>
+    virtual void Write(BinaryWriter writer) =>
+        writer.Write(this.ToReadOnlyMemory().Span);
 
     /// <summary>
     /// Writes the data to <paramref name="stream" />.
     /// </summary>
-    /// <param name="stream">The stream.</param>
-    void Write(Stream stream);
+    /// <param name="stream">The stream that will contain the data.</param>
+    virtual void Write(Stream stream) =>
+        stream.Write(this.ToReadOnlyMemory().Span);
+
+    /// <summary>
+    /// Writes the data to <paramref name="span" />.
+    /// </summary>
+    /// <param name="span">The span that will contain the data.</param>
+    void Write(Span<byte> span);
 
     /// <summary>
     /// Writes the data to <paramref name="stream" />.
     /// </summary>
-    /// <param name="stream">The stream.</param>
+    /// <param name="stream">The stream that will contain the data.</param>
     /// <param name="cancellationToken">The cancellation token.</param>
     /// <returns>An awaitable task.</returns>
-    ValueTask WriteAsync(Stream stream, CancellationToken cancellationToken = default);
+    virtual ValueTask WriteAsync(Stream stream, CancellationToken cancellationToken = default) =>
+        stream.WriteAsync(this.ToReadOnlyMemory(), cancellationToken);
+
+    /// <summary>
+    /// Writes the data to <paramref name="memory"/>
+    /// </summary>
+    /// <param name="memory">The memory that will contain the data.</param>
+    /// <param name="cancellationToken">The cancellation token.</param>
+    /// <returns>An awaitable task.</returns>
+    virtual Task WriteAsync(Memory<byte> memory, CancellationToken cancellationToken = default)
+    {
+        var me = this;
+        return Task.Run(() => me.Write(memory.Span), cancellationToken);
+    }
 }
 
 /// <summary>
@@ -52,11 +73,11 @@ public interface IBinarySerializable<TData> : IBinarySerializable
     static abstract TData FromReadOnlyMemory(ReadOnlyMemory<byte> memory);
 
     /// <summary>
-    /// Reads the <typeparamref name="TData" /> from the stream of <paramref name="reader" />.
+    /// Reads the <typeparamref name="TData" /> from the stream of <paramref name="binaryReader" />.
     /// </summary>
-    /// <param name="reader">The binary reader.</param>
+    /// <param name="binaryReader">The binary reader.</param>
     /// <returns>The deserialized <typeparamref name="TData" />.</returns>
-    static abstract TData Read(BinaryReader reader);
+    static abstract TData Read(BinaryReader binaryReader);
 
     /// <summary>
     /// Reads the <typeparamref name="TData" /> from <paramref name="stream" />.

@@ -51,15 +51,19 @@ internal readonly partial struct IPv4OptionNoOperation : IBinarySerializable<IPv
     }
 
     /// <inheritdoc />
-    public ReadOnlyMemory<byte> ToReadOnlyMemory() => new(new byte[] { (byte)this.optionType });
+    public ReadOnlyMemory<byte> ToReadOnlyMemory() =>
+        new(new byte[] { (byte)this.optionType });
 
     /// <inheritdoc />
-    public void Write(BinaryWriter writer) => writer.Write(this.ToReadOnlyMemory().Span);
+    public void Write(Span<byte> span)
+    {
+        span[0] = (byte)this.optionType;
+    }
 
     /// <inheritdoc />
-    public void Write(Stream stream) => stream.Write(this.ToReadOnlyMemory().Span);
-
-    /// <inheritdoc />
-    public ValueTask WriteAsync(Stream stream, CancellationToken cancellationToken = default) =>
-        stream.WriteAsync(this.ToReadOnlyMemory(), cancellationToken);
+    public Task WriteAsync(Memory<byte> memory, CancellationToken cancellationToken = default)
+    {
+        memory.Span[0] = (byte)this.optionType;
+        return Task.CompletedTask;
+    }
 }

@@ -58,22 +58,15 @@ internal readonly partial struct IPv4OptionStreamIdentifier : IBinarySerializabl
     public ReadOnlyMemory<byte> ToReadOnlyMemory()
     {
         var memory = new Memory<byte>(new byte[LengthFixed]);
-        var memorySpan = memory.Span;
-        memorySpan[0] = (byte)this.optionType;
-        memorySpan[1] = LengthFixed;
-        BinaryPrimitives.WriteUInt16BigEndian(memorySpan[2..], this.streamIdentifier);
+        this.Write(memory.Span);
         return memory;
     }
 
     /// <inheritdoc />
-    public void Write(BinaryWriter writer) =>
-        writer.Write(this.ToReadOnlyMemory().Span);
-
-    /// <inheritdoc />
-    public void Write(Stream stream) =>
-        stream.Write(this.ToReadOnlyMemory().Span);
-
-    /// <inheritdoc />
-    public ValueTask WriteAsync(Stream stream, CancellationToken cancellationToken = default) =>
-        stream.WriteAsync(this.ToReadOnlyMemory(), cancellationToken);
+    public void Write(Span<byte> span)
+    {
+        span[0] = (byte)this.optionType;
+        span[1] = LengthFixed;
+        BinaryPrimitives.WriteUInt16BigEndian(span[sizeof(ushort)..], this.streamIdentifier);
+    }
 }

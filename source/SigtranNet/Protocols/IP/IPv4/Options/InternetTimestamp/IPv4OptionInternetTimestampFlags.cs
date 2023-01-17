@@ -18,7 +18,7 @@ namespace SigtranNet.Protocols.IP.IPv4.Options.InternetTimestamp;
 ///             1 -- each timestamp is preceded with internet address of the
 ///                 registering entity,
 ///
-///             3 -- the internet address fields are prespecified.An IP
+///             3 -- the internet address fields are prespecified. An IP
 ///                 module only registers its timestamp if it matches its own
 ///                 address with the next specified internet address.
 ///     </code>

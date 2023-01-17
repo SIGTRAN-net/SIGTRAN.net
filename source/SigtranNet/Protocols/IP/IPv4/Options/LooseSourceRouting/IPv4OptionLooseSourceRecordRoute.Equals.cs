@@ -22,12 +22,7 @@ internal readonly partial struct IPv4OptionLooseSourceRecordRoute
         var routeSpanOther = other.route.Span;
         equal &= routeSpanThis.Length.Equals(routeSpanOther.Length);
         if (!equal) return equal;
-        for (var i = 0; i < routeSpanThis.Length; i++)
-        {
-            equal &= routeSpanThis[i].Equals(routeSpanOther[i]);
-        }
-
-        return equal;
+        return routeSpanThis.SequenceEqual(routeSpanOther);
     }
 
     /// <inheritdoc />
@@ -42,15 +37,18 @@ internal readonly partial struct IPv4OptionLooseSourceRecordRoute
     /// <inheritdoc />
     public override int GetHashCode()
     {
-        var hashCode = HashCode.Combine(this.optionType, this.length, this.pointer);
+        var hashCode = new HashCode();
+        hashCode.Add(this.optionType);
+        hashCode.Add(this.length);
+        hashCode.Add(this.pointer);
 
         var routeSpan = this.route.Span;
         for (var i = 0; i < routeSpan.Length; i++)
         {
-            hashCode = HashCode.Combine(hashCode, routeSpan[i]);
+            hashCode.Add(routeSpan[i]);
         }
 
-        return hashCode;
+        return hashCode.ToHashCode();
     }
 
     /// <summary>

@@ -6,16 +6,16 @@
 namespace SigtranNet.Binary;
 
 /// <summary>
-/// A One's Complement Checksum algorithm for a 16-bit unsigned checksum.
+/// A One's Complement Checksum algorithm for an unsigned 16-bit checksum.
 /// </summary>
 internal static class OnesComplementChecksum16Bit
 {
     /// <summary>
-    /// Calculates the checksum based on the provided data.
+    /// Generates the checksum based on the provided data.
     /// </summary>
     /// <param name="data">The data for which to calculate the checksum.</param>
     /// <returns>The calculated checksum.</returns>
-    internal static ushort Calculate(ReadOnlyMemory<ushort> data)
+    internal static ushort Generate(ReadOnlyMemory<ushort> data)
     {
         uint checksum = 0u;
         foreach (var chunk in data.Span)

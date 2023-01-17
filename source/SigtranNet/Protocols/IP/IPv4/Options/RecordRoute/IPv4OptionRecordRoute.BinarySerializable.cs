@@ -111,29 +111,21 @@ internal readonly partial struct IPv4OptionRecordRoute : IBinarySerializable<IPv
     public ReadOnlyMemory<byte> ToReadOnlyMemory()
     {
         var memory = new Memory<byte>(new byte[this.length]);
-        var memorySpan = memory.Span;
-        memorySpan[0] = (byte)this.optionType;
-        memorySpan[1] = (byte)this.length;
-        memorySpan[2] = this.pointer;
-
-        var routeSpan = this.route.Span;
-        for (var i = 0; i < routeSpan.Length; i++)
-        {
-            routeSpan[i].TryWriteBytes(memorySpan[(3 + i * sizeof(uint))..], out _);
-        }
-
+        this.Write(memory.Span);
         return memory;
     }
 
     /// <inheritdoc />
-    public void Write(BinaryWriter writer) =>
-        writer.Write(this.ToReadOnlyMemory().Span);
+    public void Write(Span<byte> span)
+    {
+        span[0] = (byte)this.optionType;
+        span[1] = (byte)this.length;
+        span[2] = this.pointer;
 
-    /// <inheritdoc />
-    public void Write(Stream stream) =>
-        stream.Write(this.ToReadOnlyMemory().Span);
-
-    /// <inheritdoc />
-    public ValueTask WriteAsync(Stream stream, CancellationToken cancellationToken = default) =>
-        stream.WriteAsync(this.ToReadOnlyMemory(), cancellationToken);
+        var routeSpan = this.route.Span;
+        for (var i = 0; i < routeSpan.Length; i++)
+        {
+            routeSpan[i].TryWriteBytes(span[(3 + i * sizeof(uint))..], out _);
+        }
+    }
 }

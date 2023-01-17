@@ -93,10 +93,17 @@ internal readonly partial struct IPv4OptionInternetTimestamp : IBinarySerializab
     {
         var memory = new Memory<byte>(new byte[this.length]);
         var memorySpan = memory.Span;
-        memorySpan[0] = (byte)this.optionType;
-        memorySpan[1] = this.length;
-        memorySpan[2] = this.pointer;
-        memorySpan[3] = (byte)((this.overflow << 4) + (byte)this.flag);
+        this.Write(memorySpan);
+        return memory;
+    }
+
+    /// <inheritdoc />
+    public void Write(Span<byte> span)
+    {
+        span[0] = (byte)this.optionType;
+        span[1] = this.length;
+        span[2] = this.pointer;
+        span[3] = (byte)((this.overflow << 4) + (byte)this.flag);
 
         var timestampsSpan = this.timestamps.Span;
         for (var i = 0; i < timestampsSpan.Length; i++)
@@ -104,27 +111,13 @@ internal readonly partial struct IPv4OptionInternetTimestamp : IBinarySerializab
             if (flag.HasFlag(IPv4OptionInternetTimestampFlags.InternetAddressPreceded))
             {
                 if (timestampsSpan[i].address is { } address)
-                    address.MapToIPv4().TryWriteBytes(memorySpan[(4 + (i * 2 * sizeof(uint)))..], out _);
-                BinaryPrimitives.WriteUInt32BigEndian(memorySpan[(4 + (i * 2 * sizeof(uint)) + sizeof(uint))..], timestampsSpan[i].timestamp);
+                    address.MapToIPv4().TryWriteBytes(span[(4 + (i * 2 * sizeof(uint)))..], out _);
+                BinaryPrimitives.WriteUInt32BigEndian(span[(4 + (i * 2 * sizeof(uint)) + sizeof(uint))..], timestampsSpan[i].timestamp);
             }
             else
             {
-                BinaryPrimitives.WriteUInt32BigEndian(memorySpan[(4 + (i * sizeof(uint)))..], timestampsSpan[i].timestamp);
+                BinaryPrimitives.WriteUInt32BigEndian(span[(4 + (i * sizeof(uint)))..], timestampsSpan[i].timestamp);
             }
         }
-
-        return memory;
     }
-
-    /// <inheritdoc />
-    public void Write(BinaryWriter writer) =>
-        writer.Write(this.ToReadOnlyMemory().Span);
-
-    /// <inheritdoc />
-    public void Write(Stream stream) =>
-        stream.Write(this.ToReadOnlyMemory().Span);
-
-    /// <inheritdoc />
-    public ValueTask WriteAsync(Stream stream, CancellationToken cancellationToken = default) =>
-        stream.WriteAsync(this.ToReadOnlyMemory(), cancellationToken);
 }

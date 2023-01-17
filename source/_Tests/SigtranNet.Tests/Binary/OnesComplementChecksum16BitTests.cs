@@ -29,15 +29,15 @@ public class OnesComplementChecksum16BitTests
                 0xc0a8, 0x00c7
         });
 
-    [Fact(DisplayName = "OnesComplementChecksum16Bit :: Calculate")]
-    internal void CalculateTest()
+    [Fact(DisplayName = $"{nameof(OnesComplementChecksum16Bit)} :: {nameof(OnesComplementChecksum16Bit.Generate)}")]
+    internal void GenerateTest()
     {
         const ushort Expected = 0xb861;
-        var actual = OnesComplementChecksum16Bit.Calculate(Data);
+        var actual = OnesComplementChecksum16Bit.Generate(Data);
         Assert.Equal(Expected, actual);
     }
 
-    [Fact(DisplayName = "OnesComplementChecksum16Bit :: Validate")]
+    [Fact(DisplayName = $"{nameof(OnesComplementChecksum16Bit)} :: {nameof(OnesComplementChecksum16Bit.Validate)}")]
     internal void ValidateTest()
     {
         var actual = OnesComplementChecksum16Bit.Validate(DataWithChecksum);

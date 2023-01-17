@@ -3,6 +3,7 @@
  * Licensed by GNU Affero General Public License version 3
  */
 
+using SigtranNet.Binary;
 using SigtranNet.Protocols.IP;
 using SigtranNet.Protocols.IP.IPv4;
 using SigtranNet.Protocols.IP.IPv4.Options;
@@ -151,7 +152,7 @@ public partial class IPv4HeaderTests
         using var binaryWriter = new BinaryWriter(memoryStream);
 
         // Act
-        header.Write(binaryWriter);
+        ((IBinarySerializable)header).Write(binaryWriter);
         binaryWriter.Flush();
         var actual = memoryStream.ToArray();
 

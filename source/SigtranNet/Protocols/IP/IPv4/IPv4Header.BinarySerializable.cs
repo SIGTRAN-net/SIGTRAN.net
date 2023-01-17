@@ -8,6 +8,7 @@ using SigtranNet.Protocols.IP.Exceptions;
 using SigtranNet.Protocols.IP.IPv4.Exceptions;
 using SigtranNet.Protocols.IP.IPv4.Options;
 using SigtranNet.Protocols.IP.IPv4.Options.Exceptions;
+using SigtranNet.Protocols.IP.IPv4.Options.InternetTimestamp;
 using SigtranNet.Protocols.IP.IPv4.Options.LooseSourceRouting;
 using SigtranNet.Protocols.IP.IPv4.Options.NoOperation;
 using SigtranNet.Protocols.IP.IPv4.Options.Security;
@@ -122,6 +123,14 @@ internal readonly partial struct IPv4Header : IBinarySerializable<IPv4Header>
                         var streamIdentifier = IPv4OptionStreamIdentifier.FromReadOnlyMemory(memory[offset..]);
                         options.Add(streamIdentifier);
                         offset += IPv4OptionStreamIdentifier.LengthFixed;
+                        break;
+                    }
+                case IPv4OptionType.NotCopied_Debugging_InternetTimestamp:
+                case IPv4OptionType.Copied_Debugging_InternetTimestamp:
+                    {
+                        var internetTimestamp = IPv4OptionInternetTimestamp.FromReadOnlyMemory(memory[offset..]);
+                        options.Add(internetTimestamp);
+                        offset += internetTimestamp.length;
                         break;
                     }
                 default:
@@ -258,42 +267,37 @@ internal readonly partial struct IPv4Header : IBinarySerializable<IPv4Header>
     public ReadOnlyMemory<byte> ToReadOnlyMemory()
     {
         var data = new Memory<byte>(new byte[this.internetHeaderLength * sizeof(uint)]);
+        this.Write(data.Span);
+        return data;
+    }
 
+    /// <inheritdoc />
+    public void Write(Span<byte> span)
+    {
         var versionInternetHeaderLength =
             (byte)(((byte)IPVersion.IPv4 << 4)
             + this.internetHeaderLength);
-        data.Span[0] = versionInternetHeaderLength;
-        data.Span[1] = (byte)this.typeOfService;
-        BinaryPrimitives.WriteUInt16BigEndian(data.Span[2..], this.totalLength);
-        BinaryPrimitives.WriteUInt16BigEndian(data.Span[4..], this.identification);
+        span[0] = versionInternetHeaderLength;
+        span[1] = (byte)this.typeOfService;
+        BinaryPrimitives.WriteUInt16BigEndian(span[2..], this.totalLength);
+        BinaryPrimitives.WriteUInt16BigEndian(span[4..], this.identification);
 
         var flagsFragmentOffset = (ushort)(((ushort)this.flags << 13) + this.fragmentOffset);
-        BinaryPrimitives.WriteUInt16BigEndian(data.Span[6..], flagsFragmentOffset);
+        BinaryPrimitives.WriteUInt16BigEndian(span[6..], flagsFragmentOffset);
 
-        data.Span[8] = this.timeToLive;
-        data.Span[9] = (byte)this.protocol;
-        BinaryPrimitives.WriteUInt16BigEndian(data.Span[10..], this.headerChecksum);
+        span[8] = this.timeToLive;
+        span[9] = (byte)this.protocol;
+        BinaryPrimitives.WriteUInt16BigEndian(span[10..], this.headerChecksum);
 
-        this.sourceAddress.MapToIPv4().TryWriteBytes(data.Span[12..], out _);
-        this.destinationAddress.MapToIPv4().TryWriteBytes(data.Span[16..], out _);
+        this.sourceAddress.MapToIPv4().TryWriteBytes(span[12..], out _);
+        this.destinationAddress.MapToIPv4().TryWriteBytes(span[16..], out _);
 
         var offset = 20;
         foreach (var option in this.options.Span)
         {
             var optionData = option.ToReadOnlyMemory();
-            optionData.CopyTo(data[offset..]);
+            optionData.Span.CopyTo(span[offset..]);
             offset += optionData.Length;
         }
-
-        return data;
     }
-
-    /// <inheritdoc />
-    public void Write(BinaryWriter writer) => writer.Write(this.ToReadOnlyMemory().Span);
-
-    /// <inheritdoc />
-    public void Write(Stream stream) => stream.Write(this.ToReadOnlyMemory().Span);
-
-    public ValueTask WriteAsync(Stream stream, CancellationToken cancellationToken = default) =>
-        stream.WriteAsync(this.ToReadOnlyMemory(), cancellationToken);
 }

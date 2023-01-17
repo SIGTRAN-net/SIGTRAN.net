@@ -3,6 +3,7 @@
  * Licensed by GNU Affero General Public License version 3
  */
 
+using SigtranNet.Binary;
 using SigtranNet.Protocols.IP.IPv4.Options;
 using SigtranNet.Protocols.IP.IPv4.Options.LooseSourceRouting;
 using System.Net;
@@ -104,7 +105,7 @@ public partial class IPv4OptionLooseSourceRecordRouteTest
         using var binaryWriter = new BinaryWriter(memoryStream);
 
         // Act
-        option.Write(binaryWriter);
+        ((IBinarySerializable)option).Write(binaryWriter);
 
         // Assert
         Assert.Equal(expected.ToArray(), memoryStream.ToArray());
@@ -118,7 +119,7 @@ public partial class IPv4OptionLooseSourceRecordRouteTest
         using var memoryStream = new MemoryStream();
 
         // Act
-        option.Write(memoryStream);
+        ((IBinarySerializable)option).Write(memoryStream);
 
         // Assert
         Assert.Equal(expected.ToArray(), memoryStream.ToArray());
@@ -132,7 +133,7 @@ public partial class IPv4OptionLooseSourceRecordRouteTest
         using var memoryStream = new MemoryStream();
 
         // Act
-        await option.WriteAsync(memoryStream);
+        await ((IBinarySerializable)option).WriteAsync(memoryStream);
 
         // Assert
         Assert.Equal(expected.ToArray(), memoryStream.ToArray());

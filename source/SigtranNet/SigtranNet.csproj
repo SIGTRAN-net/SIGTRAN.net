@@ -7,10 +7,6 @@
 		<GenerateDocumentationFile>True</GenerateDocumentationFile>
 	</PropertyGroup>
 
-	<ItemGroup>
-		<Folder Include="Protocols\Sctp\" />
-	</ItemGroup>
-
 	<ItemGroup Label="Package References">
 		<PackageReference Include="System.Memory" Version="4.5.5" />
 	</ItemGroup>
@@ -25,6 +21,12 @@
 			<AutoGen>True</AutoGen>
 			<DependentUpon>ExceptionMessages.resx</DependentUpon>
 		</Compile>
+	</ItemGroup>
+
+	<ItemGroup>
+	  <EmbeddedResource Update="Protocols\Sctp\Chunks\Parameters\ErrorCause\Exceptions\ExceptionMessages.resx">
+	    <LastGenOutput>ExceptionMessages.Designer.cs</LastGenOutput>
+	  </EmbeddedResource>
 	</ItemGroup>
 
 </Project>
