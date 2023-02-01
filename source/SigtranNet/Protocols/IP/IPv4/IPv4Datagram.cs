@@ -98,7 +98,6 @@ internal readonly partial struct IPv4Datagram
                 }));
 
         return new(
-            internetHeaderLength,
             typeOfService,
             totalLength,
             identification,

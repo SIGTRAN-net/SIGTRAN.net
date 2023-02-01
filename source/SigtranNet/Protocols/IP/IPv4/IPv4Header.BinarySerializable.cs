@@ -177,7 +177,6 @@ internal readonly partial struct IPv4Header : IBinarySerializable<IPv4Header>
                 : new ReadOnlyMemory<IIPv4Option>();
 
         return new(
-            internetHeaderLength,
             typeOfService,
             totalLength,
             identification,

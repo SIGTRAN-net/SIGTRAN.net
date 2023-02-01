@@ -198,7 +198,6 @@ internal readonly partial struct IPv4Header
     /// <summary>
     /// Initializes a new instance of <see cref="IPv4Header" />.
     /// </summary>
-    /// <param name="internetHeaderLength">The internet header length.</param>
     /// <param name="typeOfService">The type of service.</param>
     /// <param name="totalLength">The total length.</param>
     /// <param name="identification">The identification.</param>
@@ -214,7 +213,6 @@ internal readonly partial struct IPv4Header
     /// An <see cref="ArgumentOutOfRangeException" /> is thrown if the internet header length is too short.
     /// </exception>
     internal IPv4Header(
-        byte internetHeaderLength,
         IPv4TypeOfService typeOfService,
         ushort totalLength,
         ushort identification,
@@ -228,13 +226,18 @@ internal readonly partial struct IPv4Header
         ReadOnlyMemory<IIPv4Option> options)
     {
         // Guards
-        if (internetHeaderLength * sizeof(uint) < MinimumLength)
-            throw new ArgumentOutOfRangeException(nameof(internetHeaderLength));
         if (totalLength < internetHeaderLength)
             throw new ArgumentOutOfRangeException(nameof(totalLength));
 
         // Fields
-        this.internetHeaderLength = internetHeaderLength;
+        var internetHeaderLengthOctets = 5 * sizeof(uint);
+        var optionsSpan = options.Span;
+        for (var i = 0; i < options.Length; i++)
+        {
+            internetHeaderLengthOctets += optionsSpan[i].Length;
+        }
+        this.internetHeaderLength = (byte)(internetHeaderLengthOctets / sizeof(uint) + internetHeaderLengthOctets % sizeof(uint));
+
         this.typeOfService = typeOfService;
         this.totalLength = totalLength;
         this.identification = identification;
