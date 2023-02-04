@@ -12,21 +12,21 @@ public class OnesComplementChecksum16BitTests
     /// <summary>
     /// Example from <a href="https://en.wikipedia.org/wiki/Internet_checksum">Internet checksum</a>.
     /// </summary>
-    private static readonly ReadOnlyMemory<ushort> Data =
-        new(new ushort[]
+    private static readonly ReadOnlyMemory<byte> Data =
+        new(new byte[]
             {
-                0x4500, 0x0073, 0x0000, 0x4000, 0x4011, 0x0000, 0xc0a8, 0x0001,
-                0xc0a8, 0x00c7
+                0x45, 0x00, 0x00, 0x73, 0x00, 0x00, 0x40, 0x00, 0x40, 0x11, 0x00, 0x00, 0xc0, 0xa8, 0x00, 0x01,
+                0xc0, 0xa8, 0x00, 0xc7
             });
 
     /// <summary>
     /// Example from <a href="https://en.wikipedia.org/wiki/Internet_checksum">Internet checksum</a>.
     /// </summary>
-    private static readonly ReadOnlyMemory<ushort> DataWithChecksum =
-        new(new ushort[]
+    private static readonly ReadOnlyMemory<byte> DataWithChecksum =
+        new(new byte[]
         {
-                0x4500, 0x0073, 0x0000, 0x4000, 0x4011, 0xb861, 0xc0a8, 0x0001,
-                0xc0a8, 0x00c7
+                0x45, 0x00, 0x00, 0x73, 0x00, 0x00, 0x40, 0x00, 0x40, 0x11, 0xb8, 0x61, 0xc0, 0xa8, 0x00, 0x01,
+                0xc0, 0xa8, 0x00, 0xc7
         });
 
     [Fact(DisplayName = $"{nameof(OnesComplementChecksum16Bit)} :: {nameof(OnesComplementChecksum16Bit.Generate)}")]

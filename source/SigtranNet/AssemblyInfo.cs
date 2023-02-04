@@ -5,4 +5,5 @@
 
 using System.Runtime.CompilerServices;
 
+[assembly: InternalsVisibleTo("SigtranNet.Cli")]
 [assembly: InternalsVisibleTo("SigtranNet.Tests")]

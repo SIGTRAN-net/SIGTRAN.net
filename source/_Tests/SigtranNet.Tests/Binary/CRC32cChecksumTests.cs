@@ -4,6 +4,7 @@
  */
 
 using SigtranNet.Binary;
+using System.Buffers.Binary;
 
 namespace SigtranNet.Tests.Binary;
 
@@ -49,7 +50,9 @@ public class CRC32cChecksumTests
     [MemberData(nameof(Samples))]
     internal void ValidateTests(ReadOnlyMemory<byte> data, int checksumIndex, uint expected)
     {
-        var actual = CRC32cChecksum.Validate(data, checksumIndex);
-        Assert.True(actual);
+        var actual = BinaryPrimitives.ReadUInt32BigEndian(data.Span[checksumIndex..]);
+        var isValid = CRC32cChecksum.Validate(data, checksumIndex);
+        Assert.True(isValid);
+        Assert.Equal(expected, actual);
     }
 }

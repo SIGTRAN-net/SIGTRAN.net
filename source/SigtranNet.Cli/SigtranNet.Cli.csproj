@@ -7,4 +7,86 @@
 		<Nullable>enable</Nullable>
 	</PropertyGroup>
 
+	<ItemGroup>
+	  <ProjectReference Include="..\SigtranNet\SigtranNet.csproj" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <Compile Update="Context\Common.Designer.cs">
+	    <DesignTime>True</DesignTime>
+	    <AutoGen>True</AutoGen>
+	    <DependentUpon>Common.resx</DependentUpon>
+	  </Compile>
+	  <Compile Update="Context\Diagnostics\ContextMetadata.Designer.cs">
+	    <DesignTime>True</DesignTime>
+	    <AutoGen>True</AutoGen>
+	    <DependentUpon>ContextMetadata.resx</DependentUpon>
+	  </Compile>
+	  <Compile Update="Context\Diagnostics\IP\ContextMetadata.Designer.cs">
+	    <DesignTime>True</DesignTime>
+	    <AutoGen>True</AutoGen>
+	    <DependentUpon>ContextMetadata.resx</DependentUpon>
+	  </Compile>
+	  <Compile Update="Context\Diagnostics\IP\Send\ContextMetadata.Designer.cs">
+	    <DesignTime>True</DesignTime>
+	    <AutoGen>True</AutoGen>
+	    <DependentUpon>ContextMetadata.resx</DependentUpon>
+	  </Compile>
+	  <Compile Update="Context\Exceptions\ExceptionMessages.Designer.cs">
+	    <DesignTime>True</DesignTime>
+	    <AutoGen>True</AutoGen>
+	    <DependentUpon>ExceptionMessages.resx</DependentUpon>
+	  </Compile>
+	  <Compile Update="Context\Exit\ContextMetadata.Designer.cs">
+	    <DesignTime>True</DesignTime>
+	    <AutoGen>True</AutoGen>
+	    <DependentUpon>ContextMetadata.resx</DependentUpon>
+	  </Compile>
+	  <Compile Update="Context\Help\ContextMetadata.Designer.cs">
+	    <DesignTime>True</DesignTime>
+	    <AutoGen>True</AutoGen>
+	    <DependentUpon>ContextMetadata.resx</DependentUpon>
+	  </Compile>
+	  <Compile Update="Context\Main\ContextMetadata.Designer.cs">
+	    <DesignTime>True</DesignTime>
+	    <AutoGen>True</AutoGen>
+	    <DependentUpon>ContextMetadata.resx</DependentUpon>
+	  </Compile>
+	</ItemGroup>
+
+	<ItemGroup>
+	  <EmbeddedResource Update="Context\Common.resx">
+	    <Generator>ResXFileCodeGenerator</Generator>
+	    <LastGenOutput>Common.Designer.cs</LastGenOutput>
+	  </EmbeddedResource>
+	  <EmbeddedResource Update="Context\Diagnostics\ContextMetadata.resx">
+	    <Generator>ResXFileCodeGenerator</Generator>
+	    <LastGenOutput>ContextMetadata.Designer.cs</LastGenOutput>
+	  </EmbeddedResource>
+	  <EmbeddedResource Update="Context\Diagnostics\IP\ContextMetadata.resx">
+	    <Generator>ResXFileCodeGenerator</Generator>
+	    <LastGenOutput>ContextMetadata.Designer.cs</LastGenOutput>
+	  </EmbeddedResource>
+	  <EmbeddedResource Update="Context\Diagnostics\IP\Send\ContextMetadata.resx">
+	    <Generator>ResXFileCodeGenerator</Generator>
+	    <LastGenOutput>ContextMetadata.Designer.cs</LastGenOutput>
+	  </EmbeddedResource>
+	  <EmbeddedResource Update="Context\Exceptions\ExceptionMessages.resx">
+	    <Generator>ResXFileCodeGenerator</Generator>
+	    <LastGenOutput>ExceptionMessages.Designer.cs</LastGenOutput>
+	  </EmbeddedResource>
+	  <EmbeddedResource Update="Context\Exit\ContextMetadata.resx">
+	    <Generator>ResXFileCodeGenerator</Generator>
+	    <LastGenOutput>ContextMetadata.Designer.cs</LastGenOutput>
+	  </EmbeddedResource>
+	  <EmbeddedResource Update="Context\Help\ContextMetadata.resx">
+	    <Generator>ResXFileCodeGenerator</Generator>
+	    <LastGenOutput>ContextMetadata.Designer.cs</LastGenOutput>
+	  </EmbeddedResource>
+	  <EmbeddedResource Update="Context\Main\ContextMetadata.resx">
+	    <Generator>ResXFileCodeGenerator</Generator>
+	    <LastGenOutput>ContextMetadata.Designer.cs</LastGenOutput>
+	  </EmbeddedResource>
+	</ItemGroup>
+
 </Project>
