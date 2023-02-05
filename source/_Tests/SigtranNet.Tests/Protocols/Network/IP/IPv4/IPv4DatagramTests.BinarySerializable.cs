@@ -21,13 +21,15 @@ public partial class IPv4DatagramTests
                 {
                     /* Internet Header */
                     (byte)IPVersion.IPv4 << 4 | 5,                                                      // Version + IHL,
-                    (byte)IPv4TypeOfService.Internetwork_DelayNormal_ThoughputHigh_ReliabilityHigh,     // Type of Service
+                    (byte)(IPv4TypeOfService.PrecedenceCriticEcp
+                            | IPv4TypeOfService.ThroughputHigh
+                            | IPv4TypeOfService.ReliabilityHigh),                                       // Type of Service
                     32 >> 8, 32 & 0xFF,                                                                 // Total Length
                     200 >> 8, 200 & 0xFF,                                                               // Identification
                     (byte)IPv4Flags.DontFragment << 5, 15 & 0xFF,                                       // Flags + Fragment Offset
                     5,                                                                                  // Time to Live
                     (byte)IPProtocol.ExperimentationAndTesting_253,                                     // Protocol
-                    64665 >> 8, 64665 & 0xFF,                                                           // Header Checksum
+                    64682 >> 8, 64682 & 0xFF,                                                           // Header Checksum
                     172, 0, 0, 1,                                                                       // Source Address
                     192, 168, 10, 10,                                                                   // Destination Address
 
@@ -37,7 +39,10 @@ public partial class IPv4DatagramTests
                     1, 2, 3, 4,
                 }),
                 new IPv4Datagram(
-                        typeOfService: IPv4TypeOfService.Internetwork_DelayNormal_ThoughputHigh_ReliabilityHigh,
+                        typeOfService:
+                            IPv4TypeOfService.PrecedenceCriticEcp
+                            | IPv4TypeOfService.ThroughputHigh
+                            | IPv4TypeOfService.ReliabilityHigh,
                         identification: 200,
                         flags: IPv4Flags.DontFragment,
                         fragmentOffset: 15,

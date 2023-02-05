@@ -22,26 +22,27 @@ public partial class IPv4HeaderTests
             {
                 new byte[]
                 {
-                    0b0100_0101,            // Version, IHL
-                    0b110_1_0_1_00,         // Type of Service
-                    576 >> 8, 576 & 0xF0,   // Total Length
-                    0, 1,                   // Identification
-                    0b001_00000, 12,        // Various Control Flags, Fragment Offset
-                    5,                      // Time to Live (TTL)
-                    (byte)IPProtocol.UDP,   // Protocol
-                    0xAF, 0xBF,             // Header Checksum
-                    127, 0, 0, 1,           // Source Address,
-                    192, 168, 0, 1,         // Destination Address
+                    0b0100_0101,                                        // Version, IHL
+                    (byte)(IPv4TypeOfService.PrecedenceCriticEcp
+                        | IPv4TypeOfService.ThroughputHigh
+                        | IPv4TypeOfService.ReliabilityHigh),           // Type of Service
+                    576 >> 8, 576 & 0xF0,                               // Total Length
+                    0, 1,                                               // Identification
+                    0b001_00000, 12,                                    // Various Control Flags, Fragment Offset
+                    5,                                                  // Time to Live (TTL)
+                    (byte)IPProtocol.UDP,                               // Protocol
+                    21322 >> 8, 21322 & 0xFF,                           // Header Checksum
+                    127, 0, 0, 1,                                       // Source Address,
+                    192, 168, 0, 1,                                     // Destination Address
                 },
                 new IPv4Header(
-                    typeOfService: IPv4TypeOfService.Internetwork_DelayLow_ThroughputNormal_ReliabilityHigh,
+                    typeOfService: IPv4TypeOfService.PrecedenceCriticEcp | IPv4TypeOfService.ThroughputHigh | IPv4TypeOfService.ReliabilityHigh,
                     totalLength: 576,
                     identification: 1,
                     flags: IPv4Flags.MoreFragments,
                     fragmentOffset: 12,
                     timeToLive: 5,
                     protocol: IPProtocol.UDP,
-                    headerChecksum: 0xAFBF,
                     sourceAddress: new IPAddress(new byte[] { 127, 0, 0, 1 }),
                     destinationAddress: new IPAddress(new byte[] { 192, 168, 0, 1 }),
                     options: new ReadOnlyMemory<IIPv4Option>())
@@ -50,16 +51,18 @@ public partial class IPv4HeaderTests
             {
                 new byte[]
                 {
-                    0b0100_1000,            // Version, IHL
-                    0b110_1_1_1_00,         // Type of Service
-                    576 >> 8, 576 & 0xF0,   // Total Length
-                    0, 2,                   // Identification
-                    0b000_00000, 15,        // Various Control Flags, Fragment Offset
-                    3,                      // Time to Live (TTL)
-                    (byte)IPProtocol.ICMP,  // Protocol
-                    0xCF, 0xDF,             // Header Checksum
-                    192, 168, 21, 22,       // Source Address,
-                    192, 168, 21, 23,       // Destination Address
+                    0b0100_1000,                                        // Version, IHL
+                    (byte)(IPv4TypeOfService.PrecedenceCriticEcp
+                        | IPv4TypeOfService.ThroughputHigh
+                        | IPv4TypeOfService.ReliabilityHigh),           // Type of Service
+                    576 >> 8, 576 & 0xF0,                               // Total Length
+                    0, 2,                                               // Identification
+                    0b000_00000, 15,                                    // Various Control Flags, Fragment Offset
+                    3,                                                  // Time to Live (TTL)
+                    (byte)IPProtocol.ICMP,                              // Protocol
+                    39137 >> 8, 39137 & 0xFF,                           // Header Checksum
+                    192, 168, 21, 22,                                   // Source Address,
+                    192, 168, 21, 23,                                   // Destination Address
                     /* Options */
                     (byte)IPv4OptionType.NotCopied_Control_LooseSourceRouting,
                     11,
@@ -69,14 +72,13 @@ public partial class IPv4HeaderTests
                     1
                 },
                 new IPv4Header(
-                    typeOfService: IPv4TypeOfService.Internetwork_DelayLow_ThroughputHigh_ReliabilityHigh,
+                    typeOfService: IPv4TypeOfService.PrecedenceCriticEcp | IPv4TypeOfService.ThroughputHigh | IPv4TypeOfService.ReliabilityHigh,
                     totalLength: 576,
                     identification: 2,
                     flags: IPv4Flags.LastFragment,
                     fragmentOffset: 15,
                     timeToLive: 3,
                     protocol: IPProtocol.ICMP,
-                    headerChecksum: 0xCFDF,
                     sourceAddress: new IPAddress(new byte[] { 192, 168, 21, 22 }),
                     destinationAddress: new IPAddress(new byte[] { 192, 168, 21, 23 }),
                     options: new ReadOnlyMemory<IIPv4Option>(new IIPv4Option[]

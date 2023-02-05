@@ -18,7 +18,7 @@ internal interface IIcmpMessage : IBinarySerializable
 /// An Internet Control Message Protocol (ICMP) message.
 /// </summary>
 /// <typeparam name="TMessage">The type of ICMP message.</typeparam>
-internal interface IIcmpMessage<TMessage> : IIcmpMessage
+internal interface IIcmpMessage<TMessage> : IIcmpMessage, IBinarySerializable<TMessage>
     where TMessage : IIcmpMessage<TMessage>
 {
 }

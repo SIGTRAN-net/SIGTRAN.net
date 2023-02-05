@@ -13,5 +13,10 @@ internal enum IcmpMessageType : byte
     /// <summary>
     /// Destination Unreachable.
     /// </summary>
-    DestinationUnreachable = 3
+    DestinationUnreachable = 3,
+
+    /// <summary>
+    /// Time Exceeded.
+    /// </summary>
+    TimeExceeded = 11
 }

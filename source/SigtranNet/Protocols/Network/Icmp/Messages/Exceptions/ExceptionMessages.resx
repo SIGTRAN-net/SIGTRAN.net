@@ -117,10 +117,10 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="HeaderChecksumInvalid" xml:space="preserve">
-    <value>The IPv4 header checksum '{0}' is invalid.</value>
+  <data name="MessageChecksumInvalid" xml:space="preserve">
+    <value>The Internet Control Message Protocol (ICMP) message checksum '{0}' is invalid.</value>
   </data>
-  <data name="HeaderIncomplete" xml:space="preserve">
-    <value>The memory read for the IPv4 header does not have the expected length '{0}'.</value>
+  <data name="MessageTypeInvalid" xml:space="preserve">
+    <value>The specified Internet Control Message Protocol (ICMP) message type '{0}' is invalid.</value>
   </data>
 </root>

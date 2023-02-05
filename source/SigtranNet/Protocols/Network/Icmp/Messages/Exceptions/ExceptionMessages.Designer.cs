@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace SigtranNet.Protocols.Network.IP.IPv4.Exceptions {
+namespace SigtranNet.Protocols.Network.Icmp.Messages.Exceptions {
     using System;
     
     
@@ -39,7 +39,7 @@ namespace SigtranNet.Protocols.Network.IP.IPv4.Exceptions {
         internal static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("SigtranNet.Protocols.Network.IP.IPv4.Exceptions.ExceptionMessages", typeof(ExceptionMessages).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("SigtranNet.Protocols.Network.Icmp.Messages.Exceptions.ExceptionMessages", typeof(ExceptionMessages).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -61,20 +61,20 @@ namespace SigtranNet.Protocols.Network.IP.IPv4.Exceptions {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The IPv4 header checksum &apos;{0}&apos; is invalid..
+        ///   Looks up a localized string similar to The Internet Control Message Protocol (ICMP) message checksum &apos;{0}&apos; is invalid..
         /// </summary>
-        internal static string HeaderChecksumInvalid {
+        internal static string MessageChecksumInvalid {
             get {
-                return ResourceManager.GetString("HeaderChecksumInvalid", resourceCulture);
+                return ResourceManager.GetString("MessageChecksumInvalid", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The memory read for the IPv4 header does not have the expected length &apos;{0}&apos;..
+        ///   Looks up a localized string similar to The specified Internet Control Message Protocol (ICMP) message type &apos;{0}&apos; is invalid..
         /// </summary>
-        internal static string HeaderIncomplete {
+        internal static string MessageTypeInvalid {
             get {
-                return ResourceManager.GetString("HeaderIncomplete", resourceCulture);
+                return ResourceManager.GetString("MessageTypeInvalid", resourceCulture);
             }
         }
     }

@@ -20,7 +20,6 @@ internal readonly partial struct IPv4Header
             && this.fragmentOffset.Equals(other.fragmentOffset)
             && this.timeToLive.Equals(other.timeToLive)
             && this.protocol.Equals(other.protocol)
-            && this.headerChecksum.Equals(other.headerChecksum)
             && this.sourceAddress.Equals(other.sourceAddress)
             && this.destinationAddress.Equals(other.destinationAddress);
 
@@ -53,7 +52,6 @@ internal readonly partial struct IPv4Header
         hashCode.Add(this.fragmentOffset);
         hashCode.Add(this.timeToLive);
         hashCode.Add(this.protocol);
-        hashCode.Add(this.headerChecksum);
         hashCode.Add(this.sourceAddress);
         hashCode.Add(this.destinationAddress);
 

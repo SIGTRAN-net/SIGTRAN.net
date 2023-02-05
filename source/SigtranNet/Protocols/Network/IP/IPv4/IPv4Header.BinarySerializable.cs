@@ -3,6 +3,7 @@
  * Licensed by GNU Affero General Public License version 3
  */
 
+using SigtranNet.Binary;
 using SigtranNet.Protocols.Network.IP.Exceptions;
 using SigtranNet.Protocols.Network.IP.IPv4.Exceptions;
 using SigtranNet.Protocols.Network.IP.IPv4.Options;
@@ -32,7 +33,6 @@ internal readonly partial struct IPv4Header
         out ushort fragmentOffset,
         out byte timeToLive,
         out IPProtocol protocol,
-        out ushort headerChecksum,
         out IPAddress sourceAddress,
         out IPAddress destinationAddress)
     {
@@ -66,10 +66,13 @@ internal readonly partial struct IPv4Header
         protocol = (IPProtocol)span[9];
 
         // Header Checksum
-        headerChecksum = BinaryPrimitives.ReadUInt16BigEndian(span[10..12]);
+        var headerChecksum = BinaryPrimitives.ReadUInt16BigEndian(span[10..12]);
 
         sourceAddress = new IPAddress(span[12..16]);
         destinationAddress = new IPAddress(span[16..20]);
+
+        if (!OnesComplementChecksum16Bit.Validate(span[0..(internetHeaderLength * sizeof(uint))]))
+            throw new IPv4HeaderChecksumInvalidException(headerChecksum);
     }
 
     private static ReadOnlyMemory<IIPv4Option> ReadOptions(ReadOnlyMemory<byte> memory)
@@ -147,6 +150,9 @@ internal readonly partial struct IPv4Header
     /// <exception cref="IPVersionNotSupportedException">
     /// An <see cref="IPVersionNotSupportedException" /> is thrown if the specified IP version is not supported.
     /// </exception>
+    /// <exception cref="IPv4HeaderChecksumInvalidException">
+    /// An <see cref="IPv4HeaderChecksumInvalidException" /> is thrown if the IP header is corrupted or the checksum is invalid.
+    /// </exception>
     /// <exception cref="IPv4OptionInvalidTypeException">
     /// An <see cref="IPv4OptionInvalidTypeException" /> is thrown if the specified option type is invalid.
     /// </exception>
@@ -162,7 +168,6 @@ internal readonly partial struct IPv4Header
             out var fragmentOffset,
             out var timeToLive,
             out var protocol,
-            out var headerChecksum,
             out var sourceAddress,
             out var destinationAddress);
 
@@ -183,7 +188,6 @@ internal readonly partial struct IPv4Header
             fragmentOffset,
             timeToLive,
             protocol,
-            headerChecksum,
             sourceAddress,
             destinationAddress,
             options);
@@ -285,7 +289,7 @@ internal readonly partial struct IPv4Header
 
         span[8] = this.timeToLive;
         span[9] = (byte)this.protocol;
-        BinaryPrimitives.WriteUInt16BigEndian(span[10..], this.headerChecksum);
+        // 10..12 Skip checksum in order to calculate it later.
 
         this.sourceAddress.MapToIPv4().TryWriteBytes(span[12..], out _);
         this.destinationAddress.MapToIPv4().TryWriteBytes(span[16..], out _);
@@ -297,6 +301,10 @@ internal readonly partial struct IPv4Header
             optionData.Span.CopyTo(span[offset..]);
             offset += optionData.Length;
         }
+
+        // Calculate and insert the checksum.
+        var headerChecksum = OnesComplementChecksum16Bit.Generate(span);
+        BinaryPrimitives.WriteUInt16BigEndian(span[10..], headerChecksum);
     }
 
     /// <inheritdoc />

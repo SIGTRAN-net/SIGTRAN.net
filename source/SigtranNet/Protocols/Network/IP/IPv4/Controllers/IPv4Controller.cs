@@ -106,7 +106,7 @@ internal sealed class IPv4Controller
             // Send exactly one datagram, no fragmentation.
             var datagram =
                 new IPv4Datagram(
-                    IPv4TypeOfService.Network_DelayLow_ThroughputNormal_ReliabilityHigh,
+                    IPv4TypeOfService.PrecedencePriority | IPv4TypeOfService.LowDelay | IPv4TypeOfService.ReliabilityHigh,
                     this.identificationCurrent,
                     IPv4Flags.DontFragment,
                     fragmentOffset: 0,

@@ -5,6 +5,7 @@
 
 using SigtranNet.Binary;
 using SigtranNet.Protocols.Network.IP.IPv4.Options;
+using System.ComponentModel.DataAnnotations;
 using System.Net;
 
 namespace SigtranNet.Protocols.Network.IP.IPv4;
@@ -63,23 +64,14 @@ internal readonly partial struct IPv4Datagram
         ushort payloadLength)
     {
         byte internetHeaderLength = 5; // standard length, no options
+        var headerLength = internetHeaderLength * sizeof(uint);
+        var optionsSpan = options.Span;
+        for (var i = 0; i < options.Length; i++)
+        {
+            headerLength += optionsSpan[i].Length;
+        }
+        internetHeaderLength = (byte)Math.Ceiling((double)headerLength / sizeof(uint));
         ushort totalLength = (ushort)(internetHeaderLength * sizeof(uint) + payloadLength);
-        var sourceAddressBytes = sourceAddress.MapToIPv4().GetAddressBytes().AsSpan();
-        var destinationAddressBytes = destinationAddress.MapToIPv4().GetAddressBytes().AsSpan();
-        ushort headerChecksum =
-            OnesComplementChecksum16Bit.Generate(
-                new ReadOnlyMemory<byte>(new byte[]
-                {
-                    (byte)((byte)IPVersion.IPv4 << 4 | internetHeaderLength),
-                    (byte)typeOfService,
-                    (byte)(totalLength >> 8), (byte)(totalLength & 0xFF),
-                    (byte)(identification >> 8), (byte)(identification & 0xFF),
-                    (byte)((byte)flags << 5 | fragmentOffset >> 13), (byte)((byte)fragmentOffset >> 8),
-                    timeToLive,
-                    (byte)protocol,
-                    sourceAddressBytes[0], sourceAddressBytes[1], sourceAddressBytes[2], sourceAddressBytes[3],
-                    destinationAddressBytes[0], destinationAddressBytes[1], destinationAddressBytes[2], destinationAddressBytes[3]
-                }));
 
         return new(
             typeOfService,
@@ -89,7 +81,6 @@ internal readonly partial struct IPv4Datagram
             fragmentOffset,
             timeToLive,
             protocol,
-            headerChecksum,
             sourceAddress,
             destinationAddress,
             options);

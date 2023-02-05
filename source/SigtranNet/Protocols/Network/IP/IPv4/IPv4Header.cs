@@ -156,19 +156,6 @@ internal readonly partial struct IPv4Header : IIPHeader<IPv4Header>
     internal readonly IPProtocol protocol;
 
     /// <summary>
-    /// The header checksum.
-    /// </summary>
-    /// <remarks>
-    ///     From RFC 791:
-    ///     <code>
-    ///         A checksum on the header only.  Since some header fields change
-    ///         (e.g., time to live), this is recomputed and verified at each point
-    ///         that the internet header is processed.
-    ///     </code>
-    /// </remarks>
-    internal readonly ushort headerChecksum;
-
-    /// <summary>
     /// The source address.
     /// </summary>
     internal readonly IPAddress sourceAddress;
@@ -205,7 +192,6 @@ internal readonly partial struct IPv4Header : IIPHeader<IPv4Header>
     /// <param name="fragmentOffset">The fragment offset.</param>
     /// <param name="timeToLive">The time to live (TTL).</param>
     /// <param name="protocol">The IP protocol.</param>
-    /// <param name="headerChecksum">The header checksum.</param>
     /// <param name="sourceAddress">The source address.</param>
     /// <param name="destinationAddress">The destination address.</param>
     /// <param name="options">The optional header segments.</param>
@@ -220,7 +206,6 @@ internal readonly partial struct IPv4Header : IIPHeader<IPv4Header>
         ushort fragmentOffset,
         byte timeToLive,
         IPProtocol protocol,
-        ushort headerChecksum,
         IPAddress sourceAddress,
         IPAddress destinationAddress,
         ReadOnlyMemory<IIPv4Option> options)
@@ -245,7 +230,6 @@ internal readonly partial struct IPv4Header : IIPHeader<IPv4Header>
         this.fragmentOffset = fragmentOffset;
         this.timeToLive = timeToLive;
         this.protocol = protocol;
-        this.headerChecksum = headerChecksum;
         this.sourceAddress = sourceAddress;
         this.destinationAddress = destinationAddress;
         this.options = options;
