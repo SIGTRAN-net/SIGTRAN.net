@@ -10,13 +10,48 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Repository", "Repository", 
 		..\README.md = ..\README.md
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SigtranNet", "SigtranNet\SigtranNet.csproj", "{3F4999A8-8277-48B7-8F50-0EEA67CA56E8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SigtranNet", "SigtranNet\SigtranNet.csproj", "{3F4999A8-8277-48B7-8F50-0EEA67CA56E8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SigtranNet.Cli", "SigtranNet.Cli\SigtranNet.Cli.csproj", "{B01AD04F-8DCF-48EC-A68E-35CF577FD0CA}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SigtranNet.Cli", "SigtranNet.Cli\SigtranNet.Cli.csproj", "{B01AD04F-8DCF-48EC-A68E-35CF577FD0CA}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{C9080FB0-0EB9-4449-BFB5-A7DCFB9E3068}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SigtranNet.Tests", "_Tests\SigtranNet.Tests\SigtranNet.Tests.csproj", "{330E36D3-B145-49C5-8BA1-A5D3D36041DB}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SigtranNet.Tests", "_Tests\SigtranNet.Tests\SigtranNet.Tests.csproj", "{330E36D3-B145-49C5-8BA1-A5D3D36041DB}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Documentation", "Documentation", "{DCF6979B-F6FA-4546-8307-322517FB500F}"
+	ProjectSection(SolutionItems) = preProject
+		..\documentation\Index.md = ..\documentation\Index.md
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Protocols", "Protocols", "{6FAAE1A2-C687-4D62-A4FB-BE913D0363A9}"
+	ProjectSection(SolutionItems) = preProject
+		..\documentation\Protocols\Index.md = ..\documentation\Protocols\Index.md
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "IP", "IP", "{F71ACA7F-66DE-4311-9479-0B9B7058709C}"
+	ProjectSection(SolutionItems) = preProject
+		..\documentation\Protocols\Network\IP\Index.md = ..\documentation\Protocols\Network\IP\Index.md
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Network", "Network", "{D7D85EA7-8547-43DB-9A3B-88D30C8260EC}"
+	ProjectSection(SolutionItems) = preProject
+		..\documentation\Protocols\Network\Index.md = ..\documentation\Protocols\Network\Index.md
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ICMP", "ICMP", "{437E9BA7-1514-46E4-AD8B-9B47620A4E82}"
+	ProjectSection(SolutionItems) = preProject
+		..\documentation\Protocols\Network\ICMP\Index.md = ..\documentation\Protocols\Network\ICMP\Index.md
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Transport", "Transport", "{66E4F9FB-7CE9-4806-934D-2FAD87A622A1}"
+	ProjectSection(SolutionItems) = preProject
+		..\documentation\Protocols\Transport\Index.md = ..\documentation\Protocols\Transport\Index.md
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SCTP", "SCTP", "{37A00F41-60AC-4176-9E8A-F2DD9272CCBF}"
+	ProjectSection(SolutionItems) = preProject
+		..\documentation\Protocols\Transport\SCTP\Index.md = ..\documentation\Protocols\Transport\SCTP\Index.md
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -42,6 +77,12 @@ Global
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{330E36D3-B145-49C5-8BA1-A5D3D36041DB} = {C9080FB0-0EB9-4449-BFB5-A7DCFB9E3068}
+		{6FAAE1A2-C687-4D62-A4FB-BE913D0363A9} = {DCF6979B-F6FA-4546-8307-322517FB500F}
+		{F71ACA7F-66DE-4311-9479-0B9B7058709C} = {D7D85EA7-8547-43DB-9A3B-88D30C8260EC}
+		{D7D85EA7-8547-43DB-9A3B-88D30C8260EC} = {6FAAE1A2-C687-4D62-A4FB-BE913D0363A9}
+		{437E9BA7-1514-46E4-AD8B-9B47620A4E82} = {D7D85EA7-8547-43DB-9A3B-88D30C8260EC}
+		{66E4F9FB-7CE9-4806-934D-2FAD87A622A1} = {6FAAE1A2-C687-4D62-A4FB-BE913D0363A9}
+		{37A00F41-60AC-4176-9E8A-F2DD9272CCBF} = {66E4F9FB-7CE9-4806-934D-2FAD87A622A1}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {E7A0426C-4403-47E6-80E6-3C1CA0655EA6}
