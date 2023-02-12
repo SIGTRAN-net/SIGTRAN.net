@@ -5,29 +5,30 @@
 
 using SigtranNet.Binary;
 using SigtranNet.Protocols.Network.Icmp.Messages.Exceptions;
+using SigtranNet.Protocols.Network.IP;
 using SigtranNet.Protocols.Network.IP.IPv4;
 using System.Buffers.Binary;
 
-namespace SigtranNet.Protocols.Network.Icmp.Messages.DestinationUnreachable;
+namespace SigtranNet.Protocols.Network.Icmp.Messages.ParameterProblem;
 
-internal readonly partial struct IcmpDestinationUnreachableMessage
+internal readonly partial struct IcmpParameterProblemMessage
 {
     /// <inheritdoc />
     /// <exception cref="IcmpMessageTypeInvalidException">
-    /// An <see cref="IcmpMessageTypeInvalidException" /> is thrown if the specified message type is not equal to <see cref="IcmpMessageType.DestinationUnreachable" />.
+    /// An <see cref="IcmpMessageTypeInvalidException" /> is thrown if the specified ICMP message type is not equal to <see cref="IcmpMessageType.ParameterProblem" />.
     /// </exception>
     /// <exception cref="IcmpMessageChecksumInvalidException">
-    /// An <see cref="IcmpMessageChecksumInvalidException" /> is thrown if the message has an invalid checksum (or the message is invalid).
+    /// An <see cref="IcmpMessageChecksumInvalidException" /> is thrown if the checksum is invalid (or the message is invalid).
     /// </exception>
-    public static IcmpDestinationUnreachableMessage FromReadOnlyMemory(ReadOnlyMemory<byte> memory)
+    public static IcmpParameterProblemMessage FromReadOnlyMemory(ReadOnlyMemory<byte> memory)
     {
         var span = memory.Span;
         var type = (IcmpMessageType)span[0];
-        if (type != IcmpMessageType.DestinationUnreachable)
-            throw new IcmpMessageTypeInvalidException(type);
-        var code = (IcmpDestinationUnreachableCode)span[1];
+        if (type != IcmpMessageType.ParameterProblem)
+            throw new IcmpMessageTypeInvalidException(IcmpMessageType.ParameterProblem);
+        // Skip Code, because currently 0 is the only value.
         var checksum = BinaryPrimitives.ReadUInt16BigEndian(span[sizeof(ushort)..sizeof(uint)]);
-        // 4..8 unused
+        var pointer = span[sizeof(uint)];
 
         var offset = sizeof(ulong);
         var ipHeaderOriginal = IPv4Header.FromReadOnlyMemory(memory[offset..]);
@@ -37,38 +38,39 @@ internal readonly partial struct IcmpDestinationUnreachableMessage
 
         if (!OnesComplementChecksum16Bit.Validate(memory[0..offset]))
             throw new IcmpMessageChecksumInvalidException(checksum);
-        return new(code, ipHeaderOriginal, originalDataDatagramSample);
+
+        return new(pointer, ipHeaderOriginal, originalDataDatagramSample);
     }
 
     /// <inheritdoc />
     /// <exception cref="IcmpMessageTypeInvalidException">
-    /// An <see cref="IcmpMessageTypeInvalidException" /> is thrown if the specified message type is not equal to <see cref="IcmpMessageType.DestinationUnreachable" />.
+    /// An <see cref="IcmpMessageTypeInvalidException" /> is thrown if the specified ICMP message type is not equal to <see cref="IcmpMessageType.ParameterProblem" />.
     /// </exception>
     /// <exception cref="IcmpMessageChecksumInvalidException">
-    /// An <see cref="IcmpMessageChecksumInvalidException" /> is thrown if the message has an invalid checksum (or the message is invalid).
+    /// An <see cref="IcmpMessageChecksumInvalidException" /> is thrown if the checksum is invalid (or the message is invalid).
     /// </exception>
-    public static IcmpDestinationUnreachableMessage Read(BinaryReader binaryReader) =>
-        IIcmpMessage<IcmpDestinationUnreachableMessage>.Read(binaryReader);
+    public static IcmpParameterProblemMessage Read(BinaryReader binaryReader) =>
+        IIcmpMessage<IcmpParameterProblemMessage>.Read(binaryReader);
 
     /// <inheritdoc />
     /// <exception cref="IcmpMessageTypeInvalidException">
-    /// An <see cref="IcmpMessageTypeInvalidException" /> is thrown if the specified message type is not equal to <see cref="IcmpMessageType.DestinationUnreachable" />.
+    /// An <see cref="IcmpMessageTypeInvalidException" /> is thrown if the specified ICMP message type is not equal to <see cref="IcmpMessageType.ParameterProblem" />.
     /// </exception>
     /// <exception cref="IcmpMessageChecksumInvalidException">
-    /// An <see cref="IcmpMessageChecksumInvalidException" /> is thrown if the message has an invalid checksum (or the message is invalid).
+    /// An <see cref="IcmpMessageChecksumInvalidException" /> is thrown if the checksum is invalid (or the message is invalid).
     /// </exception>
-    public static IcmpDestinationUnreachableMessage Read(Stream stream) =>
-        IIcmpMessage<IcmpDestinationUnreachableMessage>.Read(stream);
+    public static IcmpParameterProblemMessage Read(Stream stream) =>
+        IIcmpMessage<IcmpParameterProblemMessage>.Read(stream);
 
     /// <inheritdoc />
     /// <exception cref="IcmpMessageTypeInvalidException">
-    /// An <see cref="IcmpMessageTypeInvalidException" /> is thrown if the specified message type is not equal to <see cref="IcmpMessageType.DestinationUnreachable" />.
+    /// An <see cref="IcmpMessageTypeInvalidException" /> is thrown if the specified ICMP message type is not equal to <see cref="IcmpMessageType.ParameterProblem" />.
     /// </exception>
     /// <exception cref="IcmpMessageChecksumInvalidException">
-    /// An <see cref="IcmpMessageChecksumInvalidException" /> is thrown if the message has an invalid checksum (or the message is invalid).
+    /// An <see cref="IcmpMessageChecksumInvalidException" /> is thrown if the checksum is invalid (or the message is invalid).
     /// </exception>
-    public static Task<IcmpDestinationUnreachableMessage> ReadAsync(Stream stream, CancellationToken cancellationToken = default) =>
-        IIcmpMessage<IcmpDestinationUnreachableMessage>.ReadAsync(stream, cancellationToken);
+    public static Task<IcmpParameterProblemMessage> ReadAsync(Stream stream, CancellationToken cancellationToken = default) =>
+        IIcmpMessage<IcmpParameterProblemMessage>.ReadAsync(stream, cancellationToken);
 
     /// <inheritdoc />
     public ReadOnlyMemory<byte> ToReadOnlyMemory()
@@ -85,10 +87,11 @@ internal readonly partial struct IcmpDestinationUnreachableMessage
     /// <inheritdoc />
     public void Write(Span<byte> span)
     {
-        span[0] = (byte)IcmpMessageType.DestinationUnreachable;
-        span[1] = (byte)this.code;
+        span[0] = (byte)IcmpMessageType.ParameterProblem;
+        span[1] = 0;
         // 2..4 Skip checksum for now in order to calculate it.
-        // 4..8 unused (2nd unsigned 32-bit word is unused).
+        span[4] = this.pointer;
+        // 5..8 unused
         var offset = sizeof(ulong);
         var ipHeaderOriginalLength = this.ipHeaderOriginal.InternetHeaderLength * sizeof(uint);
         this.ipHeaderOriginal.Write(span[offset..(offset + ipHeaderOriginalLength)]);

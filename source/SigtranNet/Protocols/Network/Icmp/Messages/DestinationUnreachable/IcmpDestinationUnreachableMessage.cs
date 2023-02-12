@@ -4,11 +4,12 @@
  */
 
 using SigtranNet.Protocols.Network.IP;
+using SigtranNet.Protocols.Network.IP.IPv4;
 
 namespace SigtranNet.Protocols.Network.Icmp.Messages.DestinationUnreachable;
 
 /// <summary>
-/// Destination Unreachable.
+/// A Destination Unreachable message in the Internet Control Message Protocol (ICMP).
 /// </summary>
 /// <remarks>
 ///     From <a href="https://datatracker.ietf.org/doc/rfc792/">RFC 792</a>:
@@ -47,11 +48,20 @@ internal readonly partial struct IcmpDestinationUnreachableMessage : IIcmpMessag
     /// <summary>
     /// The original Internet Protocol header from the datagram that caused the message.
     /// </summary>
-    internal readonly IIPHeader ipHeaderOriginal;
+    internal readonly IPv4Header ipHeaderOriginal;
 
     /// <summary>
     /// The first 64 bits of the original datagram that caused the message.
     /// </summary>
+    /// <remarks>
+    ///     From <a href="https://datatracker.ietf.org/doc/rfc792/">RFC 792</a>:
+    ///     <code>
+    ///         This data is used by the host to match the
+    ///         message to the appropriate process. If a higher level protocol
+    ///         uses port numbers, they are assumed to be in the first 64 data
+    ///         bits of the original datagram's data.
+    ///     </code>
+    /// </remarks>
     internal readonly ReadOnlyMemory<byte> originalDataDatagramSample;
 
     /// <summary>
@@ -59,10 +69,10 @@ internal readonly partial struct IcmpDestinationUnreachableMessage : IIcmpMessag
     /// </summary>
     /// <param name="code">The code that indicates the reason for the unreachable destination.</param>
     /// <param name="ipHeaderOriginal">The Internet Header that was received in the original datagram that caused the message.</param>
-    /// <param name="originalDataDatagramSample">The first 64 bits of the original datagram's data.</param>
+    /// <param name="originalDataDatagramSample">The first 64 bits of the original datagram's payload.</param>
     internal IcmpDestinationUnreachableMessage(
         IcmpDestinationUnreachableCode code,
-        IIPHeader ipHeaderOriginal,
+        IPv4Header ipHeaderOriginal,
         ReadOnlyMemory<byte> originalDataDatagramSample)
     {
         this.code = code;
