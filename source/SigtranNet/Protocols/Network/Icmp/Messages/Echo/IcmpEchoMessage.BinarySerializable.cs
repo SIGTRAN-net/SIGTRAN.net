@@ -16,7 +16,7 @@ internal readonly partial struct IcmpEchoMessage
     /// An <see cref="IcmpMessageTypeInvalidException" /> is thrown if the message type is not equal to <see cref="IcmpMessageType.Echo" /> or <see cref="IcmpMessageType.EchoReply" />.
     /// </exception>
     /// <exception cref="IcmpMessageChecksumInvalidException">
-    /// An <see cref="IcmpMessageChecksumInvalidException" /> is thrown if the checksum is invalid or the message is invalid.
+    /// An <see cref="IcmpMessageChecksumInvalidException" /> is thrown if the checksum is invalid or the message is corrupted.
     /// </exception>
     public static IcmpEchoMessage FromReadOnlyMemory(ReadOnlyMemory<byte> memory)
     {
@@ -91,6 +91,7 @@ internal readonly partial struct IcmpEchoMessage
         BinaryPrimitives.WriteUInt16BigEndian(span[6..8], this.sequenceNumber);
         this.data.Span.CopyTo(span[8..]);
 
+        // Calculate checksum and insert it.
         var checksum = OnesComplementChecksum16Bit.Generate(span[0..(8 + this.data.Length)]);
         BinaryPrimitives.WriteUInt16BigEndian(span[2..4], checksum);
     }

@@ -4,6 +4,16 @@
  */
 
 using SigtranNet.Binary;
+using SigtranNet.Protocols.Network.Icmp.Messages.DestinationUnreachable;
+using SigtranNet.Protocols.Network.Icmp.Messages.Echo;
+using SigtranNet.Protocols.Network.Icmp.Messages.Exceptions;
+using SigtranNet.Protocols.Network.Icmp.Messages.Information;
+using SigtranNet.Protocols.Network.Icmp.Messages.ParameterProblem;
+using SigtranNet.Protocols.Network.Icmp.Messages.Redirect;
+using SigtranNet.Protocols.Network.Icmp.Messages.SourceQuench;
+using SigtranNet.Protocols.Network.Icmp.Messages.TimeExceeded;
+using SigtranNet.Protocols.Network.Icmp.Messages.Timestamp;
+using System.Runtime.InteropServices;
 
 namespace SigtranNet.Protocols.Network.Icmp.Messages;
 
@@ -12,6 +22,42 @@ namespace SigtranNet.Protocols.Network.Icmp.Messages;
 /// </summary>
 internal interface IIcmpMessage : IBinarySerializable
 {
+    private static readonly Dictionary<IcmpMessageType, Func<ReadOnlyMemory<byte>, IIcmpMessage>> Deserializers =
+        new()
+        {
+            { IcmpMessageType.EchoReply, memory => IcmpEchoMessage.FromReadOnlyMemory(memory) },
+            { IcmpMessageType.DestinationUnreachable, memory => IcmpDestinationUnreachableMessage.FromReadOnlyMemory(memory) },
+            { IcmpMessageType.SourceQuench, memory => IcmpSourceQuenchMessage.FromReadOnlyMemory(memory) },
+            { IcmpMessageType.Redirect, memory => IcmpRedirectMessage.FromReadOnlyMemory(memory) },
+            { IcmpMessageType.Echo, memory => IcmpEchoMessage.FromReadOnlyMemory(memory) },
+            { IcmpMessageType.TimeExceeded, memory => IcmpTimeExceededMessage.FromReadOnlyMemory(memory) },
+            { IcmpMessageType.ParameterProblem, memory => IcmpParameterProblemMessage.FromReadOnlyMemory(memory) },
+            { IcmpMessageType.Timestamp, memory => IcmpTimestampMessage.FromReadOnlyMemory(memory) },
+            { IcmpMessageType.TimestampReply, memory => IcmpTimestampMessage.FromReadOnlyMemory(memory) },
+            { IcmpMessageType.InformationRequest, memory => IcmpInformationMessage.FromReadOnlyMemory(memory) },
+            { IcmpMessageType.InformationReply, memory => IcmpInformationMessage.FromReadOnlyMemory(memory) },
+        };
+
+    /// <summary>
+    /// Deserializes an Internet Control Message Protocol (ICMP) message from <paramref name="memory" />.
+    /// </summary>
+    /// <param name="memory">The memory that contains the ICMP message.</param>
+    /// <returns>The deserialized ICMP message.</returns>
+    /// <exception cref="IcmpMessageTypeInvalidException">
+    /// An <see cref="IcmpMessageTypeInvalidException" /> is thrown if the specified message type is invalid.
+    /// </exception>
+    /// <exception cref="IcmpMessageChecksumInvalidException">
+    /// An <see cref="IcmpMessageChecksumInvalidException" /> is thrown if the message's checksum is invalid or the message is corrupted.
+    /// </exception>
+    static IIcmpMessage FromReadOnlyMemory(ReadOnlyMemory<byte> memory)
+    {
+        var span = memory.Span;
+        var type = (IcmpMessageType)span[0];
+        ref var deserializer = ref CollectionsMarshal.GetValueRefOrNullRef(Deserializers, type);
+        if (deserializer == null)
+            throw new IcmpMessageTypeInvalidException(type);
+        return deserializer(memory);
+    }
 }
 
 /// <summary>
