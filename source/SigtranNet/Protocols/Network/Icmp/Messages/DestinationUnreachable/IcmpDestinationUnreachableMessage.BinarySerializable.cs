@@ -17,7 +17,7 @@ internal readonly partial struct IcmpDestinationUnreachableMessage
     /// An <see cref="IcmpMessageTypeInvalidException" /> is thrown if the specified message type is not equal to <see cref="IcmpMessageType.DestinationUnreachable" />.
     /// </exception>
     /// <exception cref="IcmpMessageChecksumInvalidException">
-    /// An <see cref="IcmpMessageChecksumInvalidException" /> is thrown if the message has an invalid checksum (or the message is invalid).
+    /// An <see cref="IcmpMessageChecksumInvalidException" /> is thrown if the message has an invalid checksum (or the message is corrupted).
     /// </exception>
     public static IcmpDestinationUnreachableMessage FromReadOnlyMemory(ReadOnlyMemory<byte> memory)
     {

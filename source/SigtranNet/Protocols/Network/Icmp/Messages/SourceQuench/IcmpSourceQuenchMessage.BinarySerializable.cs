@@ -18,7 +18,7 @@ internal readonly partial struct IcmpSourceQuenchMessage
     /// An <see cref="IcmpMessageTypeInvalidException" /> is thrown if the specified ICMP message type is not equal to <see cref="IcmpMessageType.SourceQuench" />.
     /// </exception>
     /// <exception cref="IcmpMessageChecksumInvalidException">
-    /// An <see cref="IcmpMessageChecksumInvalidException" /> is thrown if the checksum is invalid (or the message is invalid).
+    /// An <see cref="IcmpMessageChecksumInvalidException" /> is thrown if the checksum is invalid (or the message is corrupted).
     /// </exception>
     public static IcmpSourceQuenchMessage FromReadOnlyMemory(ReadOnlyMemory<byte> memory)
     {

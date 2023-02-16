@@ -178,5 +178,119 @@ internal enum IcmpMessageType : byte
     ///         something is wrong with the type code of the first option.
     ///     </code>
     /// </remarks>
-    ParameterProblem = 12
+    ParameterProblem = 12,
+
+    /// <summary>
+    /// Timestamp.
+    /// </summary>
+    /// <remarks>
+    ///     From <a href="https://datatracker.ietf.org/doc/rfc792/">RFC 792</a>:
+    ///     <code>
+    ///         The data received (a timestamp) in the message is returned in the
+    ///         reply together with an additional timestamp.The timestamp is 32
+    ///         bits of milliseconds since midnight UT.One use of these
+    ///         timestamps is described by Mills[5].
+    ///
+    ///         The Originate Timestamp is the time the sender last touched the
+    ///         message before sending it, the Receive Timestamp is the time the
+    ///         echoer first touched it on receipt, and the Transmit Timestamp is
+    ///         the time the echoer last touched the message on sending it.
+    /// 
+    ///         If the time is not available in miliseconds or cannot be provided
+    ///         with respect to midnight UT then any time can be inserted in a
+    ///         timestamp provided the high order bit of the timestamp is also set
+    ///         to indicate this non-standard value.
+    /// 
+    ///         The identifier and sequence number may be used by the echo sender
+    ///         to aid in matching the replies with the requests. For example,
+    ///         the identifier might be used like a port in TCP or UDP to identify
+    ///         a session, and the sequence number might be incremented on each
+    ///         request sent.The destination returns these same values in the
+    ///         reply.
+    /// 
+    ///         Code 0 may be received from a gateway or a host.
+    ///     </code>
+    /// </remarks>
+    Timestamp = 13,
+
+    /// <summary>
+    /// Timestamp Reply.
+    /// </summary>
+    /// <remarks>
+    ///     From <a href="https://datatracker.ietf.org/doc/rfc792/">RFC 792</a>:
+    ///     <code>
+    ///         The data received (a timestamp) in the message is returned in the
+    ///         reply together with an additional timestamp.The timestamp is 32
+    ///         bits of milliseconds since midnight UT.One use of these
+    ///         timestamps is described by Mills[5].
+    ///
+    ///         The Originate Timestamp is the time the sender last touched the
+    ///         message before sending it, the Receive Timestamp is the time the
+    ///         echoer first touched it on receipt, and the Transmit Timestamp is
+    ///         the time the echoer last touched the message on sending it.
+    /// 
+    ///         If the time is not available in miliseconds or cannot be provided
+    ///         with respect to midnight UT then any time can be inserted in a
+    ///         timestamp provided the high order bit of the timestamp is also set
+    ///         to indicate this non-standard value.
+    /// 
+    ///         The identifier and sequence number may be used by the echo sender
+    ///         to aid in matching the replies with the requests. For example,
+    ///         the identifier might be used like a port in TCP or UDP to identify
+    ///         a session, and the sequence number might be incremented on each
+    ///         request sent.The destination returns these same values in the
+    ///         reply.
+    /// 
+    ///         Code 0 may be received from a gateway or a host.
+    ///     </code>
+    /// </remarks>
+    TimestampReply = 14,
+
+    /// <summary>
+    /// Information Request.
+    /// </summary>
+    /// <remarks>
+    ///     From <a href="https://datatracker.ietf.org/doc/rfc792/">RFC 792</a>:
+    ///     <code>
+    ///         This message may be sent with the source network in the IP header
+    ///         source and destination address fields zero(which means "this"
+    ///         network). The replying IP module should send the reply with the
+    ///         addresses fully specified.This message is a way for a host to
+    ///         find out the number of the network it is on.
+    ///         
+    ///         The identifier and sequence number may be used by the echo sender
+    ///         to aid in matching the replies with the requests.For example,
+    ///         the identifier might be used like a port in TCP or UDP to identify
+    ///         a session, and the sequence number might be incremented on each
+    ///         request sent.The destination returns these same values in the
+    ///         reply.
+    ///         
+    ///         Code 0 may be received from a gateway or a host.
+    ///     </code>
+    /// </remarks>
+    InformationRequest = 15,
+
+    /// <summary>
+    /// Information Reply.
+    /// </summary>
+    /// <remarks>
+    ///     From <a href="https://datatracker.ietf.org/doc/rfc792/">RFC 792</a>:
+    ///     <code>
+    ///         This message may be sent with the source network in the IP header
+    ///         source and destination address fields zero(which means "this"
+    ///         network). The replying IP module should send the reply with the
+    ///         addresses fully specified.This message is a way for a host to
+    ///         find out the number of the network it is on.
+    ///         
+    ///         The identifier and sequence number may be used by the echo sender
+    ///         to aid in matching the replies with the requests.For example,
+    ///         the identifier might be used like a port in TCP or UDP to identify
+    ///         a session, and the sequence number might be incremented on each
+    ///         request sent.The destination returns these same values in the
+    ///         reply.
+    ///         
+    ///         Code 0 may be received from a gateway or a host.
+    ///     </code>
+    /// </remarks>
+    InformationReply = 16,
 }
