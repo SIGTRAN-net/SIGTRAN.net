@@ -8,6 +8,7 @@
 	</PropertyGroup>
 
 	<ItemGroup Label="Package References">
+		<PackageReference Include="BenBurgers.Binary" Version="0.1.11" />
 		<PackageReference Include="System.Memory" Version="4.5.5" />
 	</ItemGroup>
 

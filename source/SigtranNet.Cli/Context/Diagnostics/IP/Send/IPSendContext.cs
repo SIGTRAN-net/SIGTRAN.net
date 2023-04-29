@@ -62,7 +62,8 @@ internal sealed class IPSendContext : ICliContext<IPSendContext>
 
         if (IPAddress.TryParse(this.args[0], out var destinationAddress))
         {
-            var ipController = new IPv4ControllerFactory(new IPv4ControllerOptions()).Create(destinationAddress);
+            var options = new IPv4ControllerOptions();
+            var ipController = new IPv4Controller(options, sourceIPAddress: new IPAddress(new byte[] { 0, 0, 0, 0 }), destinationAddress);
             await ipController.SendAsync(IPProtocol.ExperimentationAndTesting_253, new byte[] { 1, 2, 3, 4 }, cancellationToken);
             return new ContextExecution(this);
         }

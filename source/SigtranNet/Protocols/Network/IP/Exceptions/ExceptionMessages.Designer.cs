@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace SigtranNet.Protocols.Network.IP.IPv4.Controllers.Exceptions {
+namespace SigtranNet.Protocols.Network.IP.Exceptions {
     using System;
     
     
@@ -39,7 +39,7 @@ namespace SigtranNet.Protocols.Network.IP.IPv4.Controllers.Exceptions {
         internal static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("SigtranNet.Protocols.Network.IP.IPv4.Controllers.Exceptions.ExceptionMessages", typeof(ExceptionMessages).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("SigtranNet.Protocols.Network.IP.Exceptions.ExceptionMessages", typeof(ExceptionMessages).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -61,20 +61,20 @@ namespace SigtranNet.Protocols.Network.IP.IPv4.Controllers.Exceptions {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The IPv4 Controller is already listening..
+        ///   Looks up a localized string similar to The protocol &apos;{0}&apos; is not supported..
         /// </summary>
-        internal static string AlreadyListening {
+        internal static string IPProtocolNotSupported {
             get {
-                return ResourceManager.GetString("AlreadyListening", resourceCulture);
+                return ResourceManager.GetString("IPProtocolNotSupported", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Cannot resolve the Network Interface to use for communication over IP..
+        ///   Looks up a localized string similar to The Internet Protocol version &apos;{0}&apos; is not supported..
         /// </summary>
-        internal static string CannotResolveNetworkInterface {
+        internal static string IPVersionNotSupported {
             get {
-                return ResourceManager.GetString("CannotResolveNetworkInterface", resourceCulture);
+                return ResourceManager.GetString("IPVersionNotSupported", resourceCulture);
             }
         }
     }

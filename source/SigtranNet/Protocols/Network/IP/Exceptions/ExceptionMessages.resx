@@ -117,10 +117,10 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="AlreadyListening" xml:space="preserve">
-    <value>The IPv4 Controller is already listening.</value>
+  <data name="IPProtocolNotSupported" xml:space="preserve">
+    <value>The protocol '{0}' is not supported.</value>
   </data>
-  <data name="CannotResolveNetworkInterface" xml:space="preserve">
-    <value>Cannot resolve the Network Interface to use for communication over IP.</value>
+  <data name="IPVersionNotSupported" xml:space="preserve">
+    <value>The Internet Protocol version '{0}' is not supported.</value>
   </data>
 </root>

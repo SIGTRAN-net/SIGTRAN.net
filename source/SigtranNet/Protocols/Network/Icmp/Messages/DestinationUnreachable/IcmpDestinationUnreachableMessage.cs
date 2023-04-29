@@ -3,7 +3,6 @@
  * Licensed by GNU Affero General Public License version 3
  */
 
-using SigtranNet.Protocols.Network.IP;
 using SigtranNet.Protocols.Network.IP.IPv4;
 
 namespace SigtranNet.Protocols.Network.Icmp.Messages.DestinationUnreachable;

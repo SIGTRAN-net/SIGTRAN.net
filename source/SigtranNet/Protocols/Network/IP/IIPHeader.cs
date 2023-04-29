@@ -33,8 +33,8 @@ internal interface IIPHeader : IBinarySerializable
         return version switch
         {
             IPVersion.IPv4 => IPv4Header.FromReadOnlyMemory(data),
-            IPVersion.IPv6 => throw new IPVersionNotSupportedException(),
-            _ => throw new IPVersionNotSupportedException(),
+            IPVersion.IPv6 => throw new IPVersionNotSupportedException(version),
+            _ => throw new IPVersionNotSupportedException(version),
         };
     }
 }

@@ -42,7 +42,7 @@ internal readonly partial struct IPv4Header
         var versionInternetHeaderLength = span[0];
         var version = (IPVersion)(versionInternetHeaderLength >> 4);
         if (version != IPVersion.IPv4)
-            throw new IPVersionNotSupportedException();
+            throw new IPVersionNotSupportedException(version);
         internetHeaderLength = (byte)(versionInternetHeaderLength & 0x0F);
 
         // Type of Service

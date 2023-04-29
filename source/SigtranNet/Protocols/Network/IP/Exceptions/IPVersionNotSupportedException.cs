@@ -13,8 +13,20 @@ internal sealed class IPVersionNotSupportedException : IPException
     /// <summary>
     /// Initializes a new instance of <see cref="IPVersionNotSupportedException" />.
     /// </summary>
-    internal IPVersionNotSupportedException()
-        : base("IP version not supported.")
+    /// <param name="version">
+    /// The Internet Protocol (IP) version.
+    /// </param>
+    internal IPVersionNotSupportedException(IPVersion version)
+        : base(CreateExceptionMessage(version))
     {
+        this.Version = version;
     }
+
+    /// <summary>
+    /// Gets the version that is not supported.
+    /// </summary>
+    internal IPVersion Version { get; }
+
+    private static string CreateExceptionMessage(IPVersion version) =>
+        string.Format(ExceptionMessages.IPVersionNotSupported, version);
 }
