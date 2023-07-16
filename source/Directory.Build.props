@@ -1,0 +1,6 @@
+<Project>
+	<PropertyGroup Label="Project Settings">
+		<Nullable>enable</Nullable>
+		<GenerateDocumentationFile>True</GenerateDocumentationFile>
+	</PropertyGroup>
+</Project>

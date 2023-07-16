@@ -5,4 +5,8 @@
 		<ImplicitUsings>enable</ImplicitUsings>
 	</PropertyGroup>
 
+	<ItemGroup>
+	  <ProjectReference Include="..\SigtranNet.Protocols.Network.IP.IPv4\SigtranNet.Protocols.Network.IP.IPv4.csproj" />
+	</ItemGroup>
+
 </Project>

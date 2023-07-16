@@ -1,0 +1,5 @@
+<Project>
+	<PropertyGroup Label="Project Settings">
+		<GenerateDocumentationFile>False</GenerateDocumentationFile>
+	</PropertyGroup>
+</Project>
